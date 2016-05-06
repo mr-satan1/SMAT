@@ -18,6 +18,7 @@ $(function() {
             $("#resultFilesize").text(data['size']);
             $("#resultTest").text(data['test']);
             $("#resultVT").text(data['vt']);
+            $("#resultMD5").text(data['md5'])
         }).fail(function(data){
             alert('error!');
         });

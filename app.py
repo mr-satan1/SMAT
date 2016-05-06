@@ -59,7 +59,7 @@ def testFunction(filename):
         return 'Yara Error!'
         return ''
     if matches:
-        results = 'YARA Trigger!: %s' % reduce(lambda x, y: str(x) + ', ' + str(y), matches)
+        results = 'MATCH on the following rules!\n: %s' % reduce(lambda x, y: str(x) + ', ' + str(y), matches)
         app.logger.warning('YARA Match on:' + filename  + results)
     else:
         results = 'No YARA rule matches!'
@@ -74,6 +74,7 @@ def hashcrunch(filename):
     
 def virusTotalScan(filename):
     # calculate md5 hashsum
+    global md5hashcalc
     md5hashcalc = hashcrunch(filename)
     try:
         vtPayload = {'resource': md5hashcalc, 'apikey': vtKey}
@@ -83,11 +84,11 @@ def virusTotalScan(filename):
         if vtResponseCode == 0:
             return 'Nothing in VirusTotal database'
         else:
-            #vtResponseRatio = int(vtResponse['positives'])
-            #return vtResponseRatio + '/' + str(vtResponse['Total'])
-            #return str(vtResponse['permalink'])
+            #vtResponseRatio = int(vtResponse['positives']), '/', int(vtResponse['Total'])
+            #return vtResponseRatio
+            return str(vtResponse['permalink'])
             ## Is this valid?
-            return vtRequest.text
+            #return vtRequest.text
     except:
         return 'error'
 
@@ -143,14 +144,18 @@ def upldfile():
         #if files and allowed_file(files.filename):
         if files:
             filename = secure_filename(files.filename)
-            app.logger.info('FileName: ' + filename)
+            app.logger.info('Analyzing File: ' + filename)
             updir = os.path.join(basedir, 'upload/')
             files.save(os.path.join(updir, filename))
             fullfilename = os.path.join(updir, filename)
             testme = testFunction(fullfilename)
             vtScan = virusTotalScan(fullfilename)
-            file_size = os.path.getsize(os.path.join(updir, filename))
-            return jsonify(name=filename, size=file_size, test=testme, vt=vtScan)
+            file_size = os.path.getsize(fullfilename)
+            os.remove(fullfilename)
+            app.logger.info('Removed Server Copy: ' + filename)
+            return jsonify(name=filename, size=file_size, md5=md5hashcalc, test=testme, vt=vtScan)
+                
+
 
 
 if __name__ == '__main__':
