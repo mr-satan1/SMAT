@@ -21,6 +21,13 @@ This web application requires the following:
 
 This is a quick triage for unknown/untrusted files leveraging Yara and VirusTotal. This is designed to run locally and is a proof of concept (BETA) at this time. 
 
+## Installation & Usage
+<code> git clone https://github.com/mr-satan1/SMAT.git </code>
+<code> cd SMAT </code>
+<code> pip install -r requirements.txt </code>
+<code> python app.py </code>
+
+
 ## To Do
 - Include auto-update mechanism for Yara Rules.
 - Configure Docker container:

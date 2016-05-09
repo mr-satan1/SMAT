@@ -1,0 +1,4 @@
+yara-python==3.3.0
+requests==2.4.1
+requests-oauthlib==0.4.2
+Flask==0.10.1
