@@ -25,6 +25,7 @@ This is a quick triage for unknown/untrusted files leveraging Yara and VirusTota
 <code> git clone https://github.com/mr-satan1/SMAT.git </code><br>
 <code> cd SMAT </code><br>
 <code> pip install -r requirements.txt </code><br>
+<code> python createDB.py </code><br>
 <code> python app.py </code><br>
 
 
