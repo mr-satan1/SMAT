@@ -57,8 +57,6 @@ def connectDB():
     sqliteDB.row_factory = sqlite3.Row
     return sqliteDB
 
-
-
 # Security Functions
 def importYaraRules():
     global rules
@@ -108,11 +106,7 @@ def virusTotalScan(filename):
         if vtResponseCode == 0:
             return 'Nothing in VirusTotal database'
         else:
-            #vtResponseRatio = int(vtResponse['positives']), '/', int(vtResponse['Total'])
-            #return vtResponseRatio
             return str(vtResponse['permalink'])
-            ## Is this valid?
-            #return vtRequest.text
     except:
         return 'error'
 
@@ -162,13 +156,11 @@ def pageNotFound(e):
 def index():
     return render_template('index.html')
 
-
 @app.route('/uploadajax', methods=['POST'])
 def upldfile():
     if request.method == 'POST':
         importYaraRules()
         files = request.files['file']
-        #if files and allowed_file(files.filename):
         if files:
             filename = secure_filename(files.filename)
             app.logger.info('Analyzing File: ' + filename)
@@ -188,8 +180,8 @@ if __name__ == '__main__':
     try:
         print 'connecting to SMAT database.'
         connectDB()
+        print 'Connected!'
     except:
-        print 'creating new SMAT database.'
-        initDB()
+        print 'Error connect to smat DB'
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)

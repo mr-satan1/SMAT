@@ -59,6 +59,8 @@ rule Borland
 		$patternBorland 
 }
 
+// 20150909 - Issue #39 - Commented because of High FP rate
+/*
 rule java 
 {
       meta:
@@ -68,18 +70,7 @@ rule java
 	condition:
 		$patternjava
 }
-rule NET 
-{
-      meta:
-		author="malware-lu"
-	strings:
-		
-		$patternnet = ".NET" wide ascii
-	condition:
-		$patternnet
-}
-
-
+*/
 rule MSLRHv032afakePCGuard4xxemadicius
 {
       meta:
@@ -12062,7 +12053,8 @@ condition:
 		$a0 at pe.entry_point
 }
 	
-	
+// 20150909 - Issue #39 - Commented because of High FP rate
+/*
 rule Armadillov171
 {
       meta:
@@ -12073,7 +12065,7 @@ strings:
 condition:
 		$a0 at pe.entry_point
 }
-	
+*/
 	
 rule KBySV022shoooo
 {
@@ -20164,4 +20156,50 @@ rule yoda_crypter_1_3 : Crypter
 		
 	condition:
 		$signature1 at pe.entry_point
+}
+rule dotfuscator : packer
+{
+	meta:
+		author = "Jean-Philippe Teissier / @Jipe_"
+		description = "Dotfuscator"
+		date = "2013-02-01"
+		filetype = "memory"
+		version = "1.0" 
+
+	strings:
+		$a = "Obfuscated with Dotfuscator"
+
+	condition:
+		$a
+}
+rule AutoIt : packer
+{
+	meta:
+		author = "Jean-Philippe Teissier / @Jipe_"
+		description = "AutoIT packer"
+		date = "2013-02-01"
+		filetype = "memory"
+		version = "1.0" 
+
+	strings:	
+		$a = "This is a compiled AutoIt script. AV researchers please email avsupport@autoitscript.com for support."
+
+	condition:
+		$a
+}
+rule mumblehard_packer
+{
+    meta:
+        description = "Mumblehard i386 assembly code responsible for decrypting Perl code"
+        author = "Marc-Etienne M.Léveillé"
+        date = "2015-04-07"
+        reference = "http://www.welivesecurity.com"
+        version = "1"
+
+    strings:
+
+	$decrypt = { 31 db [1-10] ba ?? 00 00 00 [0-6] (56 5f | 89 F7) 39 d3 75 13 81 fa ?? 00 00 00 75 02 31 d2 81 c2 ?? 00 00 00 31 db 43 ac 30 d8 aa 43 e2 e2 }
+
+    condition:
+        $decrypt
 }
