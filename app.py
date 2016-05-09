@@ -116,8 +116,6 @@ def virusTotalScan(filename):
     except:
         return 'error'
 
-
-
 def dated_url_for(endpoint, **values):
     if endpoint == 'js_static':
         filename = values.get('filename', None)
@@ -156,6 +154,9 @@ def css_static(filename):
 def js_static(filename):
     return send_from_directory(app.root_path + '/static/js/', filename)
 
+@app.errorhandler(404)
+def pageNotFound(e):
+    return "404 - This isnt the URL you're looking for...", 404
 
 @app.route('/')
 def index():
@@ -183,9 +184,6 @@ def upldfile():
             g.db.commit()
             return jsonify(name=filename, size=file_size, md5=md5hashcalc, test=testme, vt=vtScan)
                 
-
-
-
 if __name__ == '__main__':
     try:
         print 'connecting to SMAT database.'
