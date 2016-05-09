@@ -4,6 +4,7 @@ from flask import (
     render_template,
     send_from_directory,
     url_for,
+    g,
     jsonify
 )
 from werkzeug import secure_filename
@@ -12,6 +13,8 @@ import yara
 import subprocess
 import hashlib
 import requests
+import sqlite3
+from contextlib import closing
 from ConfigParser import SafeConfigParser
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -34,6 +37,27 @@ parser.read('config.ini')
 yaraDir = parser.get('RuleDirectory', 'YarDir')
 vtKey = parser.get('VirusTotalAPIKey', 'vtkey')
 vtURL = parser.get('VirusTotalURLS', 'reporturl')
+smatDB = parser.get('Database', 'db')
+
+# Database schema functions
+def initDB():
+    with closing(connectDB()) as db:
+        with app.open_resource('schema.sql') as schema:
+            db.cursor().executescript(schema.read())
+        db.commit()
+
+def queryDB(query, args=(), one=False):
+    cursor = g.db.execute(query, args)
+    rv = [dict((cursor.description[idx][0], value)
+        for idx, value in enumerate(row)) for row in cursor.fetchall()]
+    return (rv[0] if rv else None) if one else rv
+
+def connectDB():
+    sqliteDB = sqlite3.connect(smatDB)
+    sqliteDB.row_factory = sqlite3.Row
+    return sqliteDB
+
+
 
 # Security Functions
 def importYaraRules():
@@ -92,17 +116,6 @@ def virusTotalScan(filename):
     except:
         return 'error'
 
-# PEFrame Function
-#def peframeFunction(filename):
-#    pefile = filename
-#    #return 'This is a test function for file: %s!' % filename
-#    peframe = subprocess.check_output(['peframe', pefile])
-#    return peframe
-
-
-@app.context_processor
-def override_url_for():
-    return dict(url_for=dated_url_for)
 
 
 def dated_url_for(endpoint, **values):
@@ -120,6 +133,19 @@ def dated_url_for(endpoint, **values):
             values['q'] = int(os.stat(file_path).st_mtime)
     return url_for(endpoint, **values)
 
+@app.before_request
+def before_request():
+    g.db = connectDB()
+
+@app.teardown_request
+def teardown_request(exception):
+    if hasattr(g, 'db'):
+        g.db.close()
+
+
+@app.context_processor
+def override_url_for():
+    return dict(url_for=dated_url_for)
 
 @app.route('/css/<path:filename>')
 def css_static(filename):
@@ -153,10 +179,19 @@ def upldfile():
             file_size = os.path.getsize(fullfilename)
             os.remove(fullfilename)
             app.logger.info('Removed Server Copy: ' + filename)
+            g.db.execute('insert into smat (files, submission_date, md5sum, virustotal, yara) values (?, datetime("now"), ?, ?, ?)', (filename, md5hashcalc, vtScan, testme))
+            g.db.commit()
             return jsonify(name=filename, size=file_size, md5=md5hashcalc, test=testme, vt=vtScan)
                 
 
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    try:
+        print 'connecting to SMAT database.'
+        connectDB()
+    except:
+        print 'creating new SMAT database.'
+        initDB()
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port, debug=True)

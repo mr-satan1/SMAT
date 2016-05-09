@@ -9,13 +9,15 @@ SMAT is a simple web application written in Python. It leverages Flask, Yara-Pyt
 - What data VirusTotal has on this file.
 - Name and size of said suspicious file.
 - Logged metadata in 'IsItBad.log' in application root directory.
+- SQLite database ('smat.db') backend.
 
 ## Built With
 This web application requires the following:
--Python 2.7+
--Yara and Yara-Python
--Requests
--Flask
+- Python 2.7
+- Yara and Yara-Python
+- Requests
+- Flask
+- SQLite 
 
 This is a quick triage for unknown/untrusted files leveraging Yara and VirusTotal. This is designed to run locally and is a proof of concept (BETA) at this time. 
 
