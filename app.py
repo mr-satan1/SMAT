@@ -23,7 +23,7 @@ app = Flask(__name__)
 
 # Configure logging
 from logging import Formatter, FileHandler
-handler = FileHandler(os.path.join(basedir, 'IsItBad.log'), encoding='utf8')
+handler = FileHandler(os.path.join(basedir, 'SMAT.log'), encoding='utf8')
 handler.setFormatter(
     Formatter("[%(asctime)s] %(levelname)-8s %(message)s", "%Y-%m-%d %H:%M:%S")
 )
@@ -69,7 +69,7 @@ def importYaraRules():
     try:
         rules = yara.compile(filepaths=yaraFiles)
     except yara.SyntaxError:
-        return 'Yara problemo!'
+        return 'Yara rule import and compile failed.'
     return rules
 
 def testFunction(filename):
@@ -98,6 +98,7 @@ def virusTotalScan(filename):
     # calculate md5 hashsum
     global md5hashcalc
     md5hashcalc = hashcrunch(filename)
+    # submit md5 hashsum to VirusTotal's API.
     try:
         vtPayload = {'resource': md5hashcalc, 'apikey': vtKey}
         vtRequest = requests.get(vtURL, params=vtPayload)
@@ -106,6 +107,7 @@ def virusTotalScan(filename):
         if vtResponseCode == 0:
             return 'Nothing in VirusTotal database'
         else:
+    # If data is available, return the URL permalink to the analyst.
             return str(vtResponse['permalink'])
     except:
         return 'error'
@@ -182,6 +184,6 @@ if __name__ == '__main__':
         connectDB()
         print 'Connected!'
     except:
-        print 'Error connect to smat DB'
+        print 'Error connecting to the SMAT database. Please run createDB.py.'
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
