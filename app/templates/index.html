@@ -1,0 +1,86 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+        <link rel="stylesheet" href="/static/css/normalize.min.css">
+        <link rel="stylesheet" href="/static/css/main.css">
+
+        <script src="/static/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div class="header-container">
+            <header class="wrapper clearfix">
+                <h1 class="title">SMAT - Simple Malware Analysis Tool</h1>
+                <nav>
+                    <ul>
+                        
+                    </ul>
+                </nav>
+            </header>
+        </div>
+
+        <div class="main-container">
+            <div class="main wrapper clearfix">
+
+                <article>
+                    <header>
+                        <h1>SMAT - Functionality >>></h1>
+                        <p>SMAT is a simple web application written in Python. It
+                        leverages Flask, Yara-Python and the Requests module as well
+                        as OSINT sources such as VirusTotal. SMAT's
+                        purpose is simple from a user perspective: Feed it a suspicious
+                        file and SMAT will return back data you need for quick triage!</p>
+                    </header>
+                    <section>
+                        <h2>SMAT - Feed Me Files >>></h2>
+
+<form id="uploadform" method="post" enctype="multipart/form-data">
+    <label for="file">Select a file</label>
+    <input name="file" type="file">
+    <button id="submit" type="button">Upload</button>
+</form>
+<p>Filename:&nbsp;<b><span id="resultFilename"></span></b></p>
+<p>Filesize:&nbsp;<b><span id="resultFilesize"></span></b></p>
+<p>MD5 Hash:&nbsp;<b><span id="resultMD5"></span></b></p>
+<p>Yara Result:&nbsp;<b><span id="resultTest"></span></b></p>
+<p>VirusTotal Result:&nbsp;<b><span id="resultVT"></span></b></p>
+
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="{{url_for('js_static', filename='app.js')}}"></script>
+                    </section>
+                </article>
+
+                <aside>
+                <h3>SMAT >>> Capabilities</h3>
+                <p>Faster triage of suspicious binaries!</p>
+                <p>Keep in mind SMAT only submits the <b>MD5 hash</b> to VirusTotal!</p>
+                </aside>
+
+            </div> <!-- #main -->
+        </div> <!-- #main-container -->
+
+        <div class="footer-container">
+            <footer class="wrapper">
+                <h3>"Ayyyyyyyy!" - mr-satan</h3>
+            </footer>
+        </div>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="/static/js/vendor/jquery-1.11.2.min.js"><\/script>')</script>
+
+        <script src="/static/js/main.js"></script>
+    </body>
+</html>
