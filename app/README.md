@@ -1,6 +1,6 @@
 # SMAT - Simple Malware Analysis Tool
-SMAT is a simple web application written in Python. 
-It leverages Flask, Yara-Python and the Requests module as well as OSINT sources such as VirusTotal and the Yara-Rules Public repository. 
+SMAT is a simple web application written in Python.
+It leverages Flask, Yara-Python and the Requests module as well as OSINT sources such as VirusTotal and the Yara-Rules Public repository.
 SMAT's purpose is simple from a user perspective: Feed it a suspicious file and SMAT will return back data you need for quick triage!
 
 
@@ -19,9 +19,9 @@ This web application requires the following:
 - Yara and Yara-Python (You will need to configure Yara && Yara-Python on your own. Just follow the docs.)
 - Requests
 - Flask
-- SQLite 
+- SQLite
 
-This is a quick triage for unknown/untrusted files leveraging Yara and VirusTotal. This is designed to run locally and is a proof of concept (BETA) at this time. 
+This is a quick triage for unknown/untrusted files leveraging Yara and VirusTotal. This is designed to run locally and is a proof of concept (BETA) at this time.
 
 ## Installation & Usage
 - Note: Once again, please ensure you have Yara and Yara-Python installed on the system.
@@ -35,8 +35,4 @@ This is a quick triage for unknown/untrusted files leveraging Yara and VirusTota
 ## To Do
 - Include auto-update mechanism for Yara Rules.
 - Include Flask-Admin & User Authentication mechanism.
-- Configure Docker container:
-    - Alpine Linux
-    - Python 2.7 / PIP
-    - Nginx load balancer
-    - HTTPS
+- ~~Convert to Docker containers~~
