@@ -37,29 +37,32 @@
 
                 <article>
                     <header>
+                        <p>Put something here.</p>
                     </header>
                     <section>
-                      <article>
-                      <h2>Upload Malware.</h2>
-                      <form id="uploadform" method="post" enctype="multipart/form-data">
-                          <label for="file">Select a file</label>
-                          <input name="file" type="file">
-                          <button id="submit" type="button">Upload</button>
-                      </form>
-                      <p>Filename:&nbsp;<b><span id="resultFilename"></span></b></p>
-                      <p>Filesize:&nbsp;<b><span id="resultFilesize"></span></b></p>
-                      <p>MD5 Hash:&nbsp;<b><span id="resultMD5"></span></b></p>
-                      <p>Yara Result:&nbsp;<b><span id="resultTest"></span></b></p>
-                      <p>VirusTotal Result:&nbsp;<b><span id="resultVT"></span></b></p>
+                        <h2>Upload Malware.</h2>
 
-                      <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-                      <script src="{{url_for('js_static', filename='app.js')}}"></script>
-                    </article>
+<form id="uploadform" method="post" enctype="multipart/form-data">
+    <label for="file">Select a file</label>
+    <input name="file" type="file">
+    <button id="submit" type="button">Upload</button>
+</form>
+<p>Filename:&nbsp;<b><span id="resultFilename"></span></b></p>
+<p>Filesize:&nbsp;<b><span id="resultFilesize"></span></b></p>
+<p>MD5 Hash:&nbsp;<b><span id="resultMD5"></span></b></p>
+<p>Yara Result:&nbsp;<b><span id="resultTest"></span></b></p>
+<p>VirusTotal Result:&nbsp;<b><span id="resultVT"></span></b></p>
 
-
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script src="{{url_for('js_static', filename='app.js')}}"></script>
                     </section>
                 </article>
 
+                <aside>
+                <h3>SMAT >>> Capabilities</h3>
+                <p>Faster triage of suspicious binaries!</p>
+                <p>Keep in mind SMAT only submits the <b>MD5 hash</b> to VirusTotal!</p>
+                </aside>
 
             </div> <!-- #main -->
         </div> <!-- #main-container -->
